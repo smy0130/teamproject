@@ -8,7 +8,7 @@ public class Order {
     public Order(ArrayList<CartItem> items) {
         this.items = items;
     }
-
+   
     public int getTotalPrice() {
         int totalPrice = 0;
         for (CartItem item : items) {
