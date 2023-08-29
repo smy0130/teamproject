@@ -42,20 +42,39 @@ public class Main {
                 }
             } else if (choice == 2) {
                 while (true) {
-                    System.out.println("상품 번호와 수량을 입력하세요:");
+                    System.out.println("상품 번호를 입력하세요:");
                     int productNumber = scanner.nextInt();
 
                     if (productNumber < 1 || productNumber > productManager.getProducts().size()) {
                         System.out.println("유효하지 않은 상품 번호입니다. 다시 입력하세요.");
                         continue; // 잘못된 선택일 경우, 다시 입력을 받기 위해 다음 반복으로 이동
                     }
-
+                    System.out.println("수량을 입력 하세요 : ");
                     int quantity = scanner.nextInt();
                     Product selectedProduct = productManager.getProducts().get(productNumber - 1);
-                    cart.addItem(new CartItem(selectedProduct, quantity));
+                    int availableStock = selectedProduct.getStock();
+
+                    if (quantity > availableStock) {
+                        System.out.println(selectedProduct.getName() + " 제품의 재고가 부족하여 완료할 수 없습니다.");
+                        break; // 재고 부족한 상품이므로 루프를 종료하고 다음 동작으로 진행
+                    }
+                    
+                    boolean itemExists = false;
+                    for (CartItem item : cart.getItems()) {
+                        if (item.getProduct().equals(selectedProduct)) {
+                            item.increaseQuantity(quantity);
+                            itemExists = true;
+                            break;
+                        }
+                    }
+
+                    if (!itemExists) {
+                        cart.addItem(new CartItem(selectedProduct, quantity));
+                    }
+
                     System.out.println("장바구니에 상품이 담겼습니다.");
                     break; // 올바른 선택일 경우, 루프를 종료하고 다음 동작으로 진행
-                }
+                }            
             } else if (choice == 3) {
                 System.out.println("장바구니 내역:");
                 ArrayList<CartItem> cartItems = cart.getItems();
@@ -70,33 +89,31 @@ public class Main {
                     int itemNumber = scanner.nextInt();
                     if (itemNumber > 0 && itemNumber <= cart.getItems().size()) {
                         CartItem cartItem = cart.getItems().get(itemNumber - 1);
-                        System.out.println("1. 수량 늘리기");
-                        System.out.println("2. 수량 줄이기");
-                        int quantityChoice = scanner.nextInt();
-                        if (quantityChoice == 1) {
-                            System.out.println("늘릴 수량을 입력하세요:");
-                            int increaseAmount = scanner.nextInt();
-                            cartItem.increaseQuantity(increaseAmount);
-                            System.out.println("수량이 늘려졌습니다.");
-                        } else if (quantityChoice == 2) {
-                            System.out.println("줄일 수량을 입력하세요:");
-                            int decreaseAmount = scanner.nextInt();
-                            cartItem.decreaseQuantity(decreaseAmount);
-                        } else {
-                            System.out.println("유효하지 않은 선택입니다. 다시 입력하세요.");
+                        System.out.println("변경할 수량을 입력하세요:");
+                        int changeAmount = scanner.nextInt();
+                        
+                        Product product = cartItem.getProduct();
+                        if((product.getStock() >= changeAmount) && (changeAmount >= 0)) {
+                           cartItem.changetQuantity(changeAmount);
+                           System.out.println(product.getName() + changeAmount + "개로 변경되었습니다.");
+                        } else if (changeAmount < 0){
+                           System.out.println("잘못된 입력입니다.");
                         }
-                        break; // 잘못된 선택이 없을 경우 반복문 종료
+                        else
+                           System.out.println("재고가 없습니다.");
+                        break;
                     } else {
-                        System.out.println("유효하지 않은 상품 번호입니다. 다시 입력하세요.");
+                        System.out.println("유효하지 않은 상품 번호입니다.");
+                        break;
                     }
                 }
             } else if (choice == 5) {
-                Order order = new Order(cart.getItems());
+                Order order = new Order(cart.getItems()); // 주문 객체 생성
                 System.out.println("총 주문 금액: " + order.getTotalPrice() + "원");
                 System.out.println("주문이 완료되었습니다");
-                order.completeOrder(); // Clear the shopping cart after placing the order
-                // 메인 루프 내부
-            } else if (choice == 6) {
+                order.completeOrder(); // 주문 완료 후 장바구니 비우기
+                // 메인 루프 내부            
+            	} else if (choice == 6) {
                 System.out.println("재고를 늘릴 제품 번호를 입력하세요:");
                 int productNumber = scanner.nextInt();
 
