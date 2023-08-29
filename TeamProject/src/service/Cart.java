@@ -17,4 +17,7 @@ public class Cart {
     public ArrayList<CartItem> getItems() {
         return items;
     }
+    public void clear() {
+        items.clear(); // 장바구니를 비웁니다.
+    }
 }

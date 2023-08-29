@@ -28,4 +28,7 @@ public class CartItem {
             System.out.println("유효하지 않은 개수입니다.");
         }
     }
+    public void decreaseProductStock() {
+        product.decreaseStock(quantity);
+    }
 }

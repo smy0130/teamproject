@@ -8,12 +8,16 @@ public class Order {
     public Order(ArrayList<CartItem> items) {
         this.items = items;
     }
-   
+
     public int getTotalPrice() {
         int totalPrice = 0;
         for (CartItem item : items) {
             totalPrice += item.getProduct().getPrice() * item.getQuantity();
+            item.decreaseProductStock();
         }
         return totalPrice;
+    }
+    public void completeOrder(){
+        items.clear();
     }
 }

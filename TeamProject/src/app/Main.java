@@ -15,10 +15,10 @@ public class Main {
         Cart cart = new Cart();
 
         // 상품 정보 초기화
-        productManager.addProduct(new Product("티셔츠", 20000));
-        productManager.addProduct(new Product("청바지", 35000));
-        productManager.addProduct(new Product("맨투맨", 30000));
-        productManager.addProduct(new Product("슬랙스", 25000));
+        productManager.addProduct(new Product("티셔츠", 20000, 100));
+        productManager.addProduct(new Product("청바지", 35000, 100));
+        productManager.addProduct(new Product("맨투맨", 30000, 100));
+        productManager.addProduct(new Product("슬랙스", 25000, 100));
         // ...
 
         // 사용자 인터페이스 예시
@@ -29,7 +29,8 @@ public class Main {
             System.out.println("(3) 장바구니 보기");
             System.out.println("(4) 장바구니에서 상품 수량 늘리기/줄이기");
             System.out.println("(5) 주문하기");
-            System.out.println("(6) 종료");
+            System.out.println("(6) 재고 추가하기");
+            System.out.println("(7) 종료");
             System.out.println("===========================================");
             int choice = scanner.nextInt();
 
@@ -37,7 +38,7 @@ public class Main {
                 ArrayList<Product> products = productManager.getProducts();
                 for (int i = 0; i < products.size(); i++) {
                     Product product = products.get(i);
-                    System.out.println((i + 1) + ". " + product.getName() + " - " + product.getPrice() + "원");
+                    System.out.println((i + 1) + ". " + product.getName() + " - " + product.getPrice() + "원" + " - " + "재고: " + product.getStock());
                 }
             } else if (choice == 2) {
                 while (true) {
@@ -92,11 +93,29 @@ public class Main {
             } else if (choice == 5) {
                 Order order = new Order(cart.getItems());
                 System.out.println("총 주문 금액: " + order.getTotalPrice() + "원");
+                System.out.println("주문이 완료되었습니다");
+                order.completeOrder(); // Clear the shopping cart after placing the order
+                // 메인 루프 내부
             } else if (choice == 6) {
-                System.out.println("구매해주셔서 감사합니다");
-                break;
-            }
-        }
+                System.out.println("재고를 늘릴 제품 번호를 입력하세요:");
+                int productNumber = scanner.nextInt();
+
+                if (productNumber < 1 || productNumber > productManager.getProducts().size()) {
+                    System.out.println("유효하지 않은 제품 번호입니다. 다시 입력하세요.");
+                } else {
+                    Product selectedProduct = productManager.getProducts().get(productNumber - 1);
+                    System.out.println("추가할 재고 수량을 입력하세요:");
+                    int addStockAmount = scanner.nextInt();
+                    selectedProduct.increaseStock(addStockAmount);
+                    System.out.println(selectedProduct.getName() + "의 재고가 추가되었습니다.");
+                }
+
+                } else if (choice == 7) {
+                        System.out.println("구매해주셔서 감사합니다");
+                        break;
+                    }
+
+                }
 
         scanner.close();
     }
