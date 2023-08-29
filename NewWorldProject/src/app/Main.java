@@ -24,16 +24,9 @@
 	        // 사용자 인터페이스 예시
 	        while (true) {
 	            menuManager.displayMainMenu();
-	            int choice = scanner.nextInt();
-	
-	            if (choice == 7) {
-	                System.out.println("구매해주셔서 감사합니다");
-	                break;
-	            }
-	
-	            menuManager.runMenu(choice); // 선택한 메뉴 실행
-	        }
-	
-	        scanner.close();
-	    }
+	            int choice = scanner.nextInt();         
+	            menuManager.runMenu(choice); // 선택한 메뉴 실행	        
+	            scanner.close();
+	     }
+	   }
 	}
