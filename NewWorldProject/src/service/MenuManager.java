@@ -115,7 +115,7 @@ public class MenuManager {
                 System.out.println(selectedProduct.getName() + "의 재고가 추가되었습니다.");
             }
         } else if (choice == 7) {
-            System.out.println("구매해주셔서 감사합니다");
+            System.out.println("good bye 경호 록지");
             System.exit(0); // 프로그램 종료
         } else {
             System.out.println("잘못된 선택입니다. 다시 선택하세요.");

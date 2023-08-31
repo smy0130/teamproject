@@ -20,13 +20,11 @@
 	        productManager.addProduct(new Product("맨투맨", 30000, 100));
 	        productManager.addProduct(new Product("슬랙스", 25000, 100));
 	        // ...
-	
-	        // 사용자 인터페이스 예시
+		        
 	        while (true) {
 	            menuManager.displayMainMenu();
 	            int choice = scanner.nextInt();         
-	            menuManager.runMenu(choice); // 선택한 메뉴 실행	        
-	            scanner.close();
-	     }
+	            menuManager.runMenu(choice); // 선택한 메뉴 실행        
+	            	     }
 	   }
 	}
